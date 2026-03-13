@@ -39,7 +39,19 @@
       flex-direction: column;
       border: none;
     }
-
+        .citySelect {
+      border: 1px solid #ccc;
+      padding: 0px 10px;
+      height: 100%;
+      font-size: 14px;
+      outline: none;
+      border-right: none;
+      background: white;
+      cursor: pointer;
+    }
+    .citySelect {
+  flex: 1;
+}
     input {
       border: none;
       padding: 0px 10px;
@@ -71,12 +83,17 @@
         border: 1px solid #999;
       }
     }
-
+    a{
+      flex: 1;
+      background-color: #3aaa4e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     button {
       border: none;
       cursor: pointer;
-      background-color: #fece51;
-      flex: 1;
+      background-color: #3aaa4e;
+      
 
       @include sm{
         padding: 10px;
@@ -87,5 +104,7 @@
         height: 24px;
       }
     }
+    }
+    
   }
 }

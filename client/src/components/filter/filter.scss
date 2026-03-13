@@ -12,7 +12,9 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-
+    .citySelect{
+      width: auto;
+    }
     label {
       font-size: 10px;
     }
@@ -44,7 +46,7 @@
       padding: 10px;
       border: none;
       cursor: pointer;
-      background-color: #fece51;
+      background-color: #3aaa4e;
 
       img {
         width: 24px;

@@ -4,11 +4,13 @@ import axios from "axios";
 import { useState  } from "react";
 import { useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 function Login() {
   const [error,setError] = useState("")
   const [IsLoading, setIsLoading] = useState(false);
-
+  const {updateUser} = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSubmit = async (e) =>{
 
@@ -25,7 +27,7 @@ function Login() {
       username, password
     });
 
-    localStorage.setItem("user", JSON.stringify(res.data));
+  updateUser(res.data)
   
     navigate("/");
   }
@@ -40,12 +42,12 @@ function Login() {
     <div className="login">
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
-          <h1>Welcome back</h1>
-          <input name="username" required minLength={3} maxLength={20} min type="text" placeholder="Username" />
-          <input name="password" required type="password" placeholder="Password" />
-          {IsLoading? <button disabled>Loading</button> : <button >Login</button>}
+          <h1>Bienvenido de nuevo</h1>
+          <input name="username" required minLength={3} maxLength={20} min type="text" placeholder="Usuario" />
+          <input name="password" required type="password" placeholder="Contraseña" />
+          {IsLoading? <button disabled>Cargando...</button> : <button >Iniciar Sesión</button>}
           {error &&<span>{error}</span>}
-          <Link to="/register">{"Don't"} you have an account?</Link>
+          <Link to="/register">¿No tienes una cuenta?</Link>
         </form>
       </div>
       <div className="imgContainer">

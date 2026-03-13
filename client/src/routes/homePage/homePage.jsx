@@ -1,31 +1,36 @@
 import SearchBar from "../../components/searchBar/SearchBar";
-import "./homePage.scss";
+import { AuthContext } from "../../context/AuthContext";
 
+import { useContext } from "react";
+import "./homePage.scss";
 function HomePage() {
+
+  const {currentUser} = useContext(AuthContext)
+
+  console.log(currentUser)
   return (
     <div className="homePage">
       <div className="textContainer">
         <div className="wrapper">
-          <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
+          <h1 className="title">Encuentra Inmuebles y Obtén Tu Hogar Ideal</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-            explicabo suscipit cum eius, iure est nulla animi consequatur
-            facilis id pariatur fugit quos laudantium temporibus dolor ea
-            repellat provident impedit!
+            Explora nuestra amplia selección de propiedades en las mejores
+            ubicaciones. Ya sea que busques comprar o rentar, tenemos la opción
+            perfecta para ti. Tu hogar soñado está a solo un paso de distancia.
           </p>
           <SearchBar />
           <div className="boxes">
             <div className="box">
               <h1>16+</h1>
-              <h2>Years of Experience</h2>
+              <h2>Años de Experiencia</h2>
             </div>
             <div className="box">
               <h1>200</h1>
-              <h2>Award Gained</h2>
+              <h2>Premios Obtenidos</h2>
             </div>
             <div className="box">
               <h1>2000+</h1>
-              <h2>Property Ready</h2>
+              <h2>Propiedades Disponibles</h2>
             </div>
           </div>
         </div>

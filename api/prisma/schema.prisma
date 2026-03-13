@@ -14,6 +14,82 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
+
+
+model Post {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String @unique 
+  price Int
+  images String[]
+  address String
+  city String
+  bedroom Int
+  bathroom Int
+  latitude String
+  longitude String
+  type Type
+  property Property
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id]) // Esto basicamente hace verdadero el field de abajo.(es una regla)
+  userId String @db.ObjectId // Este field se relacion con el mismo id del usuario
+  postDetail PostDetail?
+  savedPosts SavedPost[]
+}
+
+enum Type {
+  venta
+  renta
+}
+enum Property{
+  apartamento
+  casa
+  condo
+  terreno
+}
+model PostDetail{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  desc String
+  utilities String?
+  pet String?
+  income String?
+  size Int?
+  school Int?
+  bus Int?
+  restaurant Int?
+  post Post @relation(fields: [postId], references:[id], onDelete: Cascade)
+  postId String @db.ObjectId @unique
+}
+
+model SavedPost{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  user User @relation(fields: [userId], references:[id])
+  post Post @relation(fields: [postId], references:[id], onDelete: Cascade)
+  userId String @db.ObjectId 
+  postId String @db.ObjectId @unique
+  createdAt DateTime @default(now())
+  @@unique ([userId,postId])
+}
+
+model Chat{
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    users User[] @relation(fields: [userIDs], references: [id])
+    userIDs String[] @db.ObjectId
+    createdAt DateTime @default(now())
+    seenBy String[] @db.ObjectId
+    messages Message[]
+    lastMessage String?
+}
+model Message{
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    text String 
+    userId String
+    chat Chat @relation(fields: [chatId], references: [id])
+    chatId String @db.ObjectId
+    createdAt DateTime @default(now())
+   
+   
+}
+
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique 
@@ -21,4 +97,22 @@ model User {
   password String
   avatar String?
   createdAt DateTime @default(now())
+  posts Post[]
+  savedPosts SavedPost[]
+  chat Chat[] @relation(fields: [chatIDs], references: [id])
+  chatIDs String[] @db.ObjectId
+  userContact userContact? 
+  
+}
+model userContact{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  phone String
+  emailc String
+  whatsapp String?
+  facebook String?
+  website String?
+  instagram String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @db.ObjectId @unique
 }

@@ -28,3 +28,40 @@
     }
   }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0;
+
+  button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: #3aaa4e85;
+      color: white;
+      border-color: #3aaa4e85;
+    }
+
+    &.active {
+      background-color: #3aaa4e85;
+      color: white;
+      border-color: #3aaa4e85;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

@@ -1,119 +1,135 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./chat.scss";
+import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
+import {format} from "timeago.js"
+import { SocketContext } from "../../context/SocketContext";
+import { useEffect } from "react";
+import { useRef } from "react";
+import { useNotificationStore } from "../../lib/notificationStore";
+function Chat({chats}) {
+  const[chat,setChat]=useState(null)
+  const {currentUser} =useContext(AuthContext);
+  const {socket} = useContext(SocketContext);
+  const messageEndRef = useRef()
+  const decrease = useNotificationStore(state=>state.decrease)
+  useEffect(()=>{ //Se encarga de hacer scroll al ultimo mensaje.
+      messageEndRef.current?.scrollIntoView({behavior:"smooth"});
+    },[chat])
+  const handleOpenChat = async (id,receiver)=>{
+    
 
-function Chat() {
-  const [chat, setChat] = useState(true);
+    
+    try{
+      const res = await apiRequest("/chats/"+id);
+      if(!res.data.seenBy.includes(currentUser.id)){ // Cuando se abre el chat de un mensaje no visto se reduce la notifciacion de mensajes no vistos
+        decrease()
+      }
+      setChat({...res.data, receiver})
+    
+  }catch(error){
+    console.log(error)
+  }
+}
+const handleSubmit=async e=>{
+  e.preventDefault();
+  const formData = new FormData(e.target)
+  const text=formData.get("text")
+  if(!text) return;
+  try{
+    
+    const addition = await apiRequest.post("/messages/"+chat.id,{text})
+    setChat((prev)=>({...prev,messages:[...prev.messages, addition.data]}))
+    e.target.reset()
+    socket.emit("sendMessage",{
+      receiverId: chat.receiver.id,
+      data: addition.data,
+    })
+  }catch(error){
+
+    console.log(error)
+  }
+  
+}
+
+useEffect(()=>{
+  if(!socket || !chat?.id) return;
+
+  const read = async ()=>{
+    try{
+      await apiRequest.put("/chats/read/"+chat.id)
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  const handleGetMessage = (data)=>{
+    if(chat.id === data.chatId){
+      setChat(prev=>({...prev,messages:[...prev.messages,data]}))
+      read()
+    }
+  }
+
+  socket.on("getMessage", handleGetMessage)
+
+  return ()=>{
+    socket.off("getMessage", handleGetMessage)
+  }
+},[socket,chat?.id])
+
   return (
     <div className="chat">
+      
       <div className="messages">
-        <h1>Messages</h1>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
+        <h1>Mensajes</h1>
+        {
+          chats.map(chatf=>(
+            <div className="message" key={chatf.id} style={{
+                backgroundColor: chatf.seenBy.includes(currentUser.id) || chat?.id === chatf.id ? "white" : "#fecd514e",
+              }}
+              onClick={()=>handleOpenChat(chatf.id,chatf.receiver)}
+              >
+              
+              <img
+                src={chatf.receiver.avatar || "/noavatar.png"}
+                alt=""
+              />
+              <span>{chatf.receiver.username}</span>
+              <p>{chatf.lastMessage}</p>
+            </div>
+          ))
+        }
+        
       </div>
       {chat && (
         <div className="chatBox">
           <div className="top">
             <div className="user">
               <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={chat.receiver.avatar || "noavatar.png"}
                 alt=""
               />
-              John Doe
+              {chat.receiver.username}
             </div>
             <span className="close" onClick={()=>setChat(null)}>X</span>
           </div>
           <div className="center">
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
+            {chat.messages.map(msg=> (
+               <div className="chatMessage"
+               style={{
+                  alignSelf: msg.userId === currentUser.id ? "flex-end" : "flex-start",
+                  textAlign: msg.userId === currentUser.id ? "right" : "left",}}
+               >
+              <p>{msg.text}</p>
+              <span>{format(msg.createdAt)}</span>
             </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
+            ))}
+            <div ref={messageEndRef}></div>
           </div>
-          <div className="bottom">
-            <textarea></textarea>
-            <button>Send</button>
-          </div>
+          <form className="bottom" onSubmit={handleSubmit}>
+            <textarea name="text"></textarea>
+            <button>Enviar</button>
+          </form>
         </div>
       )}
     </div>

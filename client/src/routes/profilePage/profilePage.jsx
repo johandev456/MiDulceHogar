@@ -1,15 +1,24 @@
-import { useNavigate } from "react-router-dom";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import Chat from "../../components/chat/Chat";
 import List from "../../components/list/List";
 import apiRequest from "../../lib/apiRequest";
 import "./profilePage.scss";
+import { Suspense, useContext,useEffect, } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 function ProfilePage() {
+    const data = useLoaderData();
+  const {currentUser} =useContext(AuthContext);
   const navigate = useNavigate();
+  
+  console.log(data)
+
+
   const handleLogout = async ()=>{
     try{
-      const res = apiRequest.post("/auth/logout");
-      localStorage.removeItem("user");
+      await apiRequest.post("/auth/logout");
+      updateUser(null);
       navigate("/");
     }catch (error) {
       console.log(error);
@@ -17,43 +26,83 @@ function ProfilePage() {
   }
 
   return (
-    <div className="profilePage">
+ <div className="profilePage">
       <div className="details">
         <div className="wrapper">
           <div className="title">
-            <h1>User Information</h1>
-            <button>Update Profile</button>
+            <h1>Información del Usuario</h1>
+            <Link to="/profileUpdate">
+              <button>Actualizar Perfil</button>
+            </Link>
+            
           </div>
           <div className="info">
             <span>
               Avatar:
               <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={currentUser.avatar || "/noavatar.png"}
                 alt=""
               />
             </span>
             <span>
-              Username: <b>John Doe</b>
+              Usuario: <b>{currentUser.username}</b>
             </span>
             <span>
-              E-mail: <b>john@gmail.com</b>
+              Correo: <b>{currentUser.email}</b>
             </span>
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout}>Cerrar Sesión</button>
           </div>
           <div className="title">
-            <h1>My List</h1>
-            <button>Create New Post</button>
+            <h1>Mis Publicaciones</h1>
+            <Link to="/add">
+            <button>Crear Nueva Publicación</button>
+            </Link>
+            
+            <Link to={"/userContact/"+currentUser.id}>
+            <button>Información de contacto</button>
+            </Link>
+            
           </div>
-          <List />
+          <Suspense fallback={<p>Cargando...</p>}>
+    <Await
+          resolve={data.postResponse}
+          errorElement={
+            <p>Error cargando propiedades!</p>
+          }
+        >
+          {(postResponse) => <List prof={true} posts={postResponse.data.userPosts}/>}
+        </Await>
+        </Suspense>
+
+          
           <div className="title">
-            <h1>Saved List</h1>
+            <h1>Lista Guardada</h1>
           </div>
-          <List />
+          <Suspense fallback={<p>Cargando...</p>}>
+    <Await
+          resolve={data.postResponse}
+          errorElement={
+            <p>Error cargando propiedades!</p>
+          }
+        >
+          {(postResponse) => <List prof={false}  posts={postResponse.data.savedPosts}/>}
+        </Await>
+        </Suspense>
         </div>
       </div>
       <div className="chatContainer">
         <div className="wrapper">
-          <Chat/>
+          <Suspense fallback={<p>Cargando...</p>}>
+    <Await
+          resolve={data.chatResponse}
+          errorElement={
+            <p>Error cargando chats!</p>
+          }
+        >
+          {(chatResponse) =><Chat chats={chatResponse.data}/>}
+        </Await>
+        </Suspense>
+          
         </div>
       </div>
     </div>

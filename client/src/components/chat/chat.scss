@@ -44,7 +44,7 @@
     justify-content: space-between;
 
     .top {
-      background-color: #f7c14b85;
+      background-color: #3aaa4e85;
       padding: 20px;
       font-weight: bold;
       display: flex;
@@ -85,14 +85,14 @@
 
         span{
           font-size: 12px;
-          background-color: #f7c14b39;
+          background-color: #3aaa4e39;
           padding: 2px;
           border-radius: 5px;
         }
       }
     }
     .bottom {
-      border-top: 2px solid #f7c14b85;
+      border-top: 2px solid #3aaa4e85;
       height: 60px;
       display: flex;
       align-items: center;
@@ -107,7 +107,7 @@
 
       button{
         flex:1;
-        background-color: #f7c14b85;
+        background-color: #3aaa4e85;
         height: 100%;
         border: none;
         cursor: pointer;

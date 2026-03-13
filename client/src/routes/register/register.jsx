@@ -37,13 +37,13 @@ function Register() {
     <div className="register">
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
-          <h1>Create an Account</h1>
-          <input name="username" type="text" placeholder="Username" />
-          <input name="email" type="text" placeholder="Email" />
-          <input name="password" type="password" placeholder="Password" />
-          {IsLoading? <button disabled>Loading</button> : <button >Register</button>}
+          <h1>Crear una Cuenta</h1>
+          <input name="username" type="text" placeholder="Usuario" />
+          <input name="email" type="text" placeholder="Correo electrónico" />
+          <input name="password" type="password" placeholder="Contraseña" />
+          {IsLoading? <button disabled>Cargando...</button> : <button >Registrarse</button>}
           {error &&<span>{error}</span>}
-          <Link to="/login">Do you have an account?</Link>
+          <Link to="/login">¿Ya tienes una cuenta?</Link>
         </form>
       </div>
       <div className="imgContainer">
