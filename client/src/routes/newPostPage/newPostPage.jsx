@@ -7,8 +7,11 @@ import UploadWidget from "../../components/uploadWidget/uploadWidget";
 import { useNavigate } from "react-router-dom";
 import LocationPicker from "../../components/locationPicker/locationPicker";
 import Citys from "../../components/Citys/Citys";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function NewPostPage() {
+  const { currentUser } = useContext(AuthContext);
   const [value,setValue] = useState(""); // Se toma la entrada de desc aparte porque se esta usando reactquill.
  const [error,setError]= useState("");
  const[cityf,setCityf]=useState("");
@@ -55,7 +58,7 @@ function NewPostPage() {
       
       })
       // console.log(res.data.id)
-      navigate("/"+res.data.id)
+      navigate("/userContact/"+currentUser.id)
     }catch(error){
       console.log(error)
       setError(error.response.data.message)

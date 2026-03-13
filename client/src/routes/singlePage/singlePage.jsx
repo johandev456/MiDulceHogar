@@ -2,13 +2,16 @@ import "./singlePage.scss";
 import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
 import { singlePostData, userData } from "../../lib/dummydata";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { useContext, useState } from "react";
 import {AuthContext,} from "../../context/AuthContext"
 import apiRequest from "../../lib/apiRequest";
 function SinglePage() {
-  const post = useLoaderData();
+  const data = useLoaderData();
+  const post = data.res.data;
+  const postUser = data.res1.data.userContact || data.res1.data; // Si no hay información de contacto, usar la información del usuario
+  console.log(postUser)
   const [saved,setSaved] = useState(post.isSaved)
   const navigate= useNavigate();
   const {currentUser} = useContext(AuthContext)
@@ -51,20 +54,71 @@ function SinglePage() {
           </div>
         </div>
       </div>
+      
       <div className="features">
+        
         <div className="wrapper">
+          <div className="contactModule">
+            <p className="contactTitle">Contactar Vendedor</p>
+            <div className="contactHeader">
+              <img src={post.user.avatar || "/noavatar.png"} alt="Vendedor" />
+              <span>{postUser.name}</span>
+              
+            </div>
+            <span>Telefono: {postUser.phone || ""}</span>
+            <span>Email: {postUser.emailc || ""}</span>
+             <div className="contactActions">
+              {postUser.whatsapp && (
+                <button
+                  onClick={() => window.open(`https://wa.me/${postUser.whatsapp}`, "_blank")}
+                  type="button"
+                >
+                  <img src="/ws.png" alt="WhatsApp" />
+                  <span>Whatsapp</span>
+                </button>
+              )}
+
+              {postUser.facebook && (
+                <button
+                  onClick={() => window.open(`https://www.facebook.com/${postUser.facebook}`, "_blank")}
+                  type="button"
+                >
+                  <img src="/fb.png" alt="Facebook" />
+                  <span>Facebook</span>
+                </button>
+              )}
+
+              {postUser.instagram && (
+                <button
+                  onClick={() => window.open(`https://www.instagram.com/${postUser.instagram}`, "_blank")}
+                  type="button"
+                >
+                  <img src="/insta.png" alt="Instagram" />
+                  <span>Instagram</span>
+                </button>
+              )}
+
+              {postUser.website && (
+                <button
+                  onClick={() => window.open(`https://${postUser.website}`, "_blank")}
+                  type="button"
+                >
+                  <img src="/web.png" alt="Sitio web" />
+                  <span>Sitio Web</span>
+                </button>
+              )}
+            </div>
+          </div>
           <p className="title">General</p>
           <div className="listVertical">
             <div className="feature">
               <img src="/utility.png" alt="" />
               <div className="featureText">
                 <span>Servicios</span>
-                {
-                  post.postDetail.utilities === "owner"?
-                  (<p>El propietario es responsable</p>):
-                  (<p>El inquilino es responsable</p>)
+                
+                 <p>{post.postDetail.utilities} </p> 
 
-                }
+                
               </div>
             </div>
             <div className="feature">

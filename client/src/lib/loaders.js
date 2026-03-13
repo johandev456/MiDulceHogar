@@ -3,7 +3,10 @@ import apiRequest from "./apiRequest"
 
 export const singlePageLoader = async ({request,params})=>{
     const res = await apiRequest("/posts/"+params.id)
-    return res.data;
+    const res1= await apiRequest("/users/"+res.data.userId)
+    const postAndUser ={res,res1}
+    
+    return postAndUser;
 }
 export const listPageLoader = async ({request,params})=>{
     const query = request.url.split("?")[1]

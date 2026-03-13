@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 function ProfilePage() {
     const data = useLoaderData();
-  const {currentUser} =useContext(AuthContext);
+  const {currentUser, updateUser} = useContext(AuthContext);
   const navigate = useNavigate();
   
   console.log(data)

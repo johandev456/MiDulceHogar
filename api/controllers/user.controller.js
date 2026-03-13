@@ -59,7 +59,7 @@ export const updateUser = async (req,res)=>{
         console.log(contact)
         
         if(!contact){
-            const newContact = await prisma.userContact.create({ data: { ...body, userId: tokenUserId } })
+            const newContact = await prisma.userContact.create( { ...body, userId: tokenUserId } )
             console.log(newContact)
 
             return res.status(200).json({message: "Contact info created!"})
@@ -69,7 +69,7 @@ export const updateUser = async (req,res)=>{
                 where:{
                 userId:tokenUserId 
             },
-            data:{ ...body }
+            data: {...body}
             
             })
             res.status(200).json({message: "Contact info updated!"})

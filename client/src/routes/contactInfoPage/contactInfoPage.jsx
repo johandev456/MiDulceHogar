@@ -26,7 +26,7 @@ const {currentUser} =useContext(AuthContext);
     try{
       const res= await apiRequest.put(`/users/${currentUser.id}`, {data, contact:true})
       // updateUser(res.data);
-      navigate(`/userContact/${currentUser.id}`)
+      navigate(`/profile`)
     }catch(error){
       console.log(error)
       setError(error.response.data.message)
@@ -59,7 +59,17 @@ const {currentUser} =useContext(AuthContext);
             />
           </div>
           <div className="item">
-            <label htmlFor="name">Whatsapp</label>
+            <label htmlFor="email">Telefono</label>
+            <input
+              required
+              id="phone"
+              name="phone"
+              type="text"
+              defaultValue={contactinfo.userContact?.phone}
+            />
+          </div>
+          <div className="item">
+            <label htmlFor="name">Whatsapp(opcional)</label>
             <input
               id="whatsapp"
               name="whatsapp"
@@ -68,7 +78,7 @@ const {currentUser} =useContext(AuthContext);
             />
           </div>
           <div className="item">
-            <label htmlFor="name">Instagram</label>
+            <label htmlFor="name">Instagram(opcional)</label>
             <input
               id="instagram"
               name="instagram"
@@ -77,7 +87,7 @@ const {currentUser} =useContext(AuthContext);
             />
           </div>
           <div className="item">
-            <label htmlFor="name">Facebook</label>
+            <label htmlFor="name">Facebook(opcional)</label>
             <input
               id="facebook"
               name="facebook"
@@ -86,7 +96,7 @@ const {currentUser} =useContext(AuthContext);
             />
           </div>
           <div className="item">
-            <label htmlFor="name">Sitio Web</label>
+            <label htmlFor="name">Sitio Web(opcional)</label>
             <input
               id="website"
               name="website"
