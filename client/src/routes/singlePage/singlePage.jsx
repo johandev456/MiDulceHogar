@@ -11,10 +11,25 @@ function SinglePage() {
   const data = useLoaderData();
   const post = data.res.data;
   const postUser = data.res1.data.userContact || data.res1.data; // Si no hay información de contacto, usar la información del usuario
-  console.log(postUser)
+  
+  const postUserId= postUser.userId || postUser.id
+  console.log(postUserId)
   const [saved,setSaved] = useState(post.isSaved)
   const navigate= useNavigate();
   const {currentUser} = useContext(AuthContext)
+  const handleChat = async ()=>{
+    const body={
+      userIDs:[currentUser.id,postUserId],
+      seenBy:[currentUser.id]
+    }
+    try{
+      await apiRequest.post("/chats/",body)
+      navigate("/profile")
+    }catch(err){
+      console.log(err)
+    }
+    
+  }
   const handleSave=async()=>{
     // Usar optimistic hook si se actualiza despues de react 19
     setSaved((prev)=> !prev);
@@ -188,10 +203,12 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
-              <img src="/chat.png" alt="" />
-              Enviar Mensaje
-            </button>
+           { (currentUser.id !== post.userId) && (
+              <button onClick={handleChat}>
+                <img src="/chat.png" alt="" />
+                Enviar Mensaje
+              </button>
+            )}
             <button onClick={handleSave} 
               style={{
                 backgroundColor: saved ? "#fece51":"white"
