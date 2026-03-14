@@ -2,7 +2,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-
+  .deleteButton{
+    align-items: right;
+    border: none;
+  }
+   img {
+      width: 16px;
+      height: 16px;
+    }
   .messages {
     flex: 1;
     display: flex;
@@ -44,7 +51,7 @@
     justify-content: space-between;
 
     .top {
-      background-color: #3aaa4e85;
+      background-color: #5b6f9085;
       padding: 20px;
       font-weight: bold;
       display: flex;
@@ -85,14 +92,14 @@
 
         span{
           font-size: 12px;
-          background-color: #3aaa4e39;
+          background-color: #5b6f9039;
           padding: 2px;
           border-radius: 5px;
         }
       }
     }
     .bottom {
-      border-top: 2px solid #3aaa4e85;
+      border-top: 2px solid #5b6f9085;
       height: 60px;
       display: flex;
       align-items: center;
@@ -107,7 +114,7 @@
 
       button{
         flex:1;
-        background-color: #3aaa4e85;
+        background-color: #5b6f9085;
         height: 100%;
         border: none;
         cursor: pointer;

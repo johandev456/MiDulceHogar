@@ -7,11 +7,13 @@ import { SocketContext } from "../../context/SocketContext";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useNotificationStore } from "../../lib/notificationStore";
+import { Navigate, useNavigate } from "react-router-dom";
 function Chat({chats}) {
   const[chat,setChat]=useState(null)
   const {currentUser} =useContext(AuthContext);
   const {socket} = useContext(SocketContext);
   const messageEndRef = useRef()
+  const navigate= useNavigate()
   const decrease = useNotificationStore(state=>state.decrease)
   useEffect(()=>{ //Se encarga de hacer scroll al ultimo mensaje.
       messageEndRef.current?.scrollIntoView({behavior:"smooth"});
@@ -29,6 +31,16 @@ function Chat({chats}) {
     
   }catch(error){
     console.log(error)
+  }
+}
+const handleDelete = async (chatIdf)=>{
+  try{
+   
+    await apiRequest.delete("/chats/"+chatIdf)
+    window.location.reload()
+  }
+  catch(err){
+    console.log(err)
   }
 }
 const handleSubmit=async e=>{
@@ -84,8 +96,13 @@ useEffect(()=>{
         <h1>Mensajes</h1>
         {
           chats.map(chatf=>(
+            <>
+            <button onClick={()=>handleDelete(chatf.id)} className="deleteButton">
+                Borrar chat
+                <img  src="/del.png" alt="" />
+            </button>
             <div className="message" key={chatf.id} style={{
-                backgroundColor: chatf.seenBy.includes(currentUser.id) || chat?.id === chatf.id ? "white" : "#fecd514e",
+                backgroundColor: chatf.seenBy.includes(currentUser.id) || chat?.id === chatf.id ? "white" : "#5b6f904e",
               }}
               onClick={()=>handleOpenChat(chatf.id,chatf.receiver)}
               >
@@ -96,7 +113,9 @@ useEffect(()=>{
               />
               <span>{chatf.receiver.username}</span>
               <p>{chatf.lastMessage}</p>
+              
             </div>
+            </>
           ))
         }
         

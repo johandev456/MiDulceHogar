@@ -81,13 +81,27 @@ export const getChat = async (req,res)=>{
 
 export const addChat = async (req,res)=>{
     const tokenUserId = req.userId
+    const otherUserId = req.body.userIDs[1]
     try{
+        const existingChat = await prisma.chat.findFirst({
+            where: {
+                userIDs: {
+                hasEvery: [tokenUserId, otherUserId],
+                },
+            },
+            });
+        if(!existingChat) {
         const newChat = await prisma.chat.create({
-            data:{
-                userIDs:[tokenUserId,req.body.userIDs[1]] 
-            }
+                    data:{
+                        userIDs:[tokenUserId,req.body.userIDs[1]] 
+                    }
         })
         res.status(200).json(newChat)
+        }else{
+            
+            res.status(200).json({message: "Chat already exists!"})
+        }
+        
     }catch (error){
         console.log(error)
         res.status(500).json({message:"Failed to add chats!"})
@@ -116,4 +130,22 @@ export const readChat = async (req,res)=>{
         console.log(error)
         res.status(500).json({message:"Failed to read chats!"})
     }
+}
+
+export const deleteChat =async (req,res)=>{
+    const tokenUserId= req.userId;
+    const id= req.params.id
+    try{
+        await prisma.chat.delete({
+        where:{
+            id
+        }
+    })
+    res.status(204).json({message:"Chat deleted succesfully!"})
+    }catch (err){
+        console.log(err)
+        res.status(500).json({message:"Failed to delete chats!"})
+    }
+    
+    
 }

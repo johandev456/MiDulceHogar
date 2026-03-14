@@ -21,7 +21,7 @@
   .mapContainer {
     flex: 2;
     height: 100%;
-    background-color: #fcf5f3;
+    background-color: #f3f6fb;
 
     @include md{
       display: none;
@@ -48,15 +48,15 @@
     transition: all 0.2s;
 
     &:hover:not(:disabled) {
-      background-color: #3aaa4e85;
+      background-color: #5b6f9085;
       color: white;
-      border-color: #3aaa4e85;
+      border-color: #5b6f9085;
     }
 
     &.active {
-      background-color: #3aaa4e85;
+      background-color: #5b6f9085;
       color: white;
-      border-color: #3aaa4e85;
+      border-color: #5b6f9085;
     }
 
     &:disabled {

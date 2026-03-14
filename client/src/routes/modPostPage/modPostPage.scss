@@ -80,14 +80,14 @@
           padding: 15px;
           border-radius: 6px;
           border: none;
-          background-color: teal;
+          background-color: #5b6f90;
           color: white;
           font-weight: bold;
           cursor: pointer;
           transition: 0.2s;
 
           &:hover {
-            background-color: rgb(0, 100, 100);
+            background-color: #445672;
           }
         }
 
@@ -102,7 +102,7 @@
   /* panel derecho imágenes */
   .sideContainer {
     flex: 2;
-    background-color: #fcf5f3;
+    background-color: #f3f6fb;
     display: flex;
     flex-direction: column;
     gap: 20px;

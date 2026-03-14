@@ -51,7 +51,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background-color: #fcf5f3;
+    background-color: #f3f6fb;
     height: 100%;
 
     @include md {
@@ -84,11 +84,15 @@ nav {
 
       .profile{
         padding: 12px 24px;
-        background-color: #3aaa4e;
+        background-color: #5b6f90;
         cursor: pointer;
-        border: none;
+      
+        border-radius: 8px;
         position: relative;
         
+        span{
+          color:white
+        }
         .notification{
           position: absolute;
           top: -8px;
@@ -107,7 +111,7 @@ nav {
     }
 
     .registernav {
-      background-color: #3aaa4e;
+      background-color: #5b6f90;
       
     }
 
