@@ -1,0 +1,97 @@
+@import "../../responsive.scss";
+
+.siteFooter {
+	background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+	border-top: 1px solid #dfe6f1;
+	padding: 18px 20px 14px;
+	color: #2b211b;
+
+	.footerMain {
+		display: grid;
+		grid-template-columns: 1.8fr 1fr 1fr;
+		gap: 24px;
+
+		@include md {
+			grid-template-columns: 1fr 1fr;
+			gap: 20px;
+		}
+
+		@include sm {
+			grid-template-columns: 1fr;
+			gap: 14px;
+		}
+	}
+
+	.brandBlock {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+
+		h3 {
+			font-size: 22px;
+			line-height: 1.1;
+		}
+
+		p {
+			color: #5a5a5a;
+			max-width: 420px;
+			line-height: 1.45;
+			font-size: 14px;
+		}
+
+		.statusChip {
+			width: fit-content;
+			background-color: rgba(91, 111, 144, 0.12);
+			color: #5b6f90;
+			border: 1px solid rgba(91, 111, 144, 0.28);
+			border-radius: 999px;
+			padding: 6px 12px;
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0.2px;
+		}
+	}
+
+	.linkColumn {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		h4 {
+			font-size: 15px;
+			color: #5b6f90;
+			text-transform: uppercase;
+			letter-spacing: 0.6px;
+			margin-bottom: 2px;
+		}
+
+		a {
+			width: fit-content;
+			color: #2b211b;
+			font-size: 14px;
+			transition: all 0.2s ease;
+
+			&:hover {
+				color: #5b6f90;
+				transform: translateX(2px);
+			}
+		}
+	}
+
+	.footerBottom {
+		margin-top: 14px;
+		padding-top: 12px;
+		border-top: 1px dashed #cfd8e6;
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+		color: #6c6c6c;
+		font-size: 13px;
+
+		@include sm {
+			flex-direction: column;
+			gap: 6px;
+			font-size: 12px;
+		}
+	}
+}
