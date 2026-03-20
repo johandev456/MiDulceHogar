@@ -10,7 +10,7 @@ export const verifyToken = (req, res, next) => {
         jwt.verify(token, process.env.JWT_SECRET_KEY, async(err, payload)=>{
             if(err) return res.status(403).json({message: "Token is not valid!"});
             req.userId = payload.id; // Se obtiene el id del usuario para verificaciones posteriores
-
+            req.isAdmin = payload.isAdmin
             next();
         })
     

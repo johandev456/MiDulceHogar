@@ -21,7 +21,9 @@ function Navbar() {
         </a>
         <a href="/">Inicio</a>
         <Link to={"/list"}><a href="/">Propiedades</a></Link>
-     
+        {currentUser?.isAdmin && (
+          <Link to={"/listUsers"}><a href="/">Usuarios</a></Link>
+        )}
         <a href="/">Acerca de</a>
         <a href="/">Contacto</a>
        

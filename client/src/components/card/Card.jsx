@@ -7,7 +7,8 @@ import apiRequest from "../../lib/apiRequest";
 function Card({ item ,prof}) {
     
     const [saved,setSaved] = useState(item.isSaved||false)
-   
+   // Get isAdmin from localStorage
+
   
 
   const navigate= useNavigate();
@@ -69,11 +70,11 @@ function Card({ item ,prof}) {
               
                 <img  src={saved ? "/saved.png":"/save.png"} alt="" />
             </div>
-            {prof && <div onClick={handleDelete} className="icon">
+            {(prof || currentUser.isAdmin) && <div onClick={handleDelete} className="icon">
               
                 <img  src="/del.png" alt="" />
             </div>}
-            {prof && <div onClick={handleMod} className="icon">
+            {(prof || currentUser.isAdmin) && <div onClick={handleMod} className="icon">
               
                 <img  src="/edit.png" alt="" />
             </div>}

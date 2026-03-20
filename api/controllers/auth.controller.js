@@ -26,7 +26,7 @@ export const register = async (req, res) => {
     }
 }
 export const login = async (req, res) => {
-    const { email, password, username } = req.body;
+    const { isAdmin, password, username } = req.body;
 
     try{// Verificar si el usuario existe en la base de datos
     const user = await prisma.user.findUnique({
@@ -35,17 +35,21 @@ export const login = async (req, res) => {
     if(!user) return res.status(401).json({ message: "Credenciales inválidas" });
     // Verificar la contraseña 
     const passwordValidacion = await bcrypt.compare(password, user.password);
-    if(!passwordValidacion) return res.status(401).json({ message: "Credenciales inválidas" });
+    if(!passwordValidacion || (isAdmin && user.isAdmin===false)) return res.status(401).json({ message: "Credenciales inválidas" });
         const age = 1000 * 60 * 60 * 24 * 7; // 7 días en milisegundos
 
+    
+    
     // Generar un token de autenticación
     const token = jwt.sign({
         id: user.id,
-        isAdmin: false
+        isAdmin: isAdmin,
     }, process.env.JWT_SECRET_KEY,{expiresIn: age}) // Clave secreta para firmar el token)
 
 
     const {password: userPassword, ...userData} = user
+    
+    isAdmin? userData.isAdmin=true : userData.isAdmin = false;
     
     res.cookie("token", token,{
         httpOnly: true,

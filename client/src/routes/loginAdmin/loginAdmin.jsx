@@ -1,4 +1,4 @@
-import "./login.scss";
+import "./loginAdmin.scss";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState  } from "react";
@@ -7,7 +7,8 @@ import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 
-function Login() {
+
+function LoginAdmin() {
   const [error,setError] = useState("")
   const [IsLoading, setIsLoading] = useState(false);
   const {updateUser} = useContext(AuthContext);
@@ -24,7 +25,7 @@ function Login() {
 
     try
     {const res = await apiRequest.post("/auth/login",{
-      username, password, isAdmin:false
+      username, password, isAdmin:true
       
     });
 
@@ -43,12 +44,12 @@ function Login() {
     <div className="login">
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
-          <h1>Bienvenido de nuevo</h1>
+          <h1>Bienvenido Admin</h1>
           <input name="username" required minLength={3} maxLength={20} min type="text" placeholder="Usuario" />
           <input name="password" required type="password" placeholder="Contraseña" />
           {IsLoading? <button disabled>Cargando...</button> : <button >Iniciar Sesión</button>}
           {error &&<span>{error}</span>}
-          <Link to="/register">¿No tienes una cuenta?</Link>
+         
         </form>
       </div>
       <div className="imgContainer">
@@ -58,4 +59,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginAdmin;

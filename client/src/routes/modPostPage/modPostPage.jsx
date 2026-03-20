@@ -9,8 +9,9 @@ import Citys from "../../components/Citys/Citys";
 import UploadWidget from "../../components/uploadWidget/uploadWidget";
     
 function ModPostPage() {
-    const post = useLoaderData()
-    console.log(post)
+    const postunf = useLoaderData()
+    const post = postunf.res.data
+
   const [value,setValue] = useState(post.postDetail.desc); // Se toma la entrada de desc aparte porque se esta usando reactquill.
  const [error,setError]= useState("");
  const[cityf,setCityf]=useState(post.city);

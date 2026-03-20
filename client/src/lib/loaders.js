@@ -30,3 +30,12 @@ export const profilePageLoader = async ()=>{
         chatResponse: chatPromise
     })
 }
+
+export const listUserLoader = async ()=>{
+    
+    const usersPromise = apiRequest("/users/")
+    return defer({
+        usersResponse: usersPromise
+    });
+   
+}

@@ -13,8 +13,10 @@ import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage";
 import Register from "./routes/register/register";
 import {Layout, RequireAuth } from "./routes/layout/layout";
 import ModPostPage from "./routes/modPostPage/modPostPage";
-import { getUserContact, listPageLoader, profilePageLoader, singlePageLoader } from "./lib/loaders";
+import { getUserContact, listPageLoader, listUserLoader, profilePageLoader, singlePageLoader } from "./lib/loaders";
 import ContactInfoPage from "./routes/contactInfoPage/contactInfoPage";
+import LoginAdmin from "./routes/loginAdmin/loginAdmin";
+import ListUsers from "./routes/listUsers/listUsers";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,6 +38,7 @@ function App() {
           path:"/list",
           element:<ListPage/>,
           loader: listPageLoader
+
         },
         
         {
@@ -45,7 +48,11 @@ function App() {
         {
           path:"/register",
           element:<Register/>
-        }
+        },
+        {
+          path:"/loginAdmin",
+          element:<LoginAdmin/>
+        },
       ]
     },
     {
@@ -74,6 +81,11 @@ function App() {
           path: "/userContact/:id",
           element: <ContactInfoPage/>,
           loader: getUserContact
+        }
+        ,{
+          path: "/listUsers/",
+          element: <ListUsers/>,
+          loader: listUserLoader
         }
 
       ]

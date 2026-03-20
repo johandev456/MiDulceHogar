@@ -65,18 +65,18 @@
     position: relative;
     display: flex;
     align-items: center;
-
+    margin-top: 130px;
     @include md {
       display: none;
     }
 
     img {
-      width: 115%;
-      position: absolute;
-      right: 0;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
 
       @include lg {
-        width: 105%;
+        width: 100%;
       }
     }
   }

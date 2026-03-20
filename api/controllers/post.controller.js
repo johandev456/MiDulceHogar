@@ -118,11 +118,14 @@ export const getPost = async (req, res) =>{
 }
 export const updatePost = async (req, res) =>{
     try{
+        console.log(req)
         const id= req.params.id;
         const tokenUserId = req.userId;
+        const access =req.isAdmin;
+        
         const data = req.body;
         const post = await prisma.post.findUnique({where:{id}})
-        if(post.userId!==tokenUserId) return res.status(403).json({message: "Not authorized!"})
+        if((post.userId!==tokenUserId) && access===false) return res.status(403).json({message: "Not authorized!"})
         const updatePost= await prisma.post.update({where:{id}, data:{...data.postData}}) 
         const updatePostDetail= await prisma.postDetail.update({where:{postId:post.id}, data:{...data.postDetail}})        
         res.status(200).json({message: "Post updated successfully!"})
@@ -134,11 +137,12 @@ export const updatePost = async (req, res) =>{
 export const deletePost = async (req, res) =>{
     const id = req.params.id;
     const tokenUserId = req.userId;
+    const access =req.isAdmin;
     try{
         
         const post = await prisma.post.findUnique({where:{id}})
         if(!post) return res.status(404).json({message: "Post was not found"})
-        if(post.userId!== tokenUserId) return res.status(403).json({message: "Not authorized!"})
+        if((post.userId!==tokenUserId) && access===false) return res.status(403).json({message: "Not authorized!"})
         
         // Borrar SavedPost asociados
         await prisma.savedPost.deleteMany({

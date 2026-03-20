@@ -1,0 +1,42 @@
+.Users{
+    padding: 16px;
+}
+.userCards{
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(24px, 1fr));
+    gap: 14px;
+    margin-top: 12px;
+
+}
+.userCard{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+   
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #6e82a1;
+    h3,p{
+        color: white;
+    }
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+img{
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.userInfo h3 {
+margin: 0;
+font-size: 16px;
+line-height: 1.2;
+}
+
+.userInfo p {
+margin: 4px 0 0;
+font-size: 14px;
+
+}

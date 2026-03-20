@@ -7,7 +7,8 @@ const isValidObjectId = (value) => /^[a-f\d]{24}$/i.test(value)
 export const getUsers = async (req,res)=>{
     try{
         const users = await prisma.user.findMany();
-        res.status(200).json(users)
+        console.log(users)
+        return res.status(200).json(users)
     }catch (error){
         console.log(error)
         res.status(500).json({message:"Se fue a pique"})
