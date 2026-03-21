@@ -3,16 +3,21 @@ import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 import { useState } from "react";
 import apiRequest from "../../lib/apiRequest"
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import UploadWidget from "../../components/uploadWidget/uploadWidget";
 
 function ProfileUpdatePage() {
+  const navigate = useNavigate()
+  const data = useLoaderData();
   const {updateUser,currentUser} =useContext(AuthContext);
+  if (!currentUser.isAdmin && currentUser.id !== data.id) navigate("/profile")
+  
+  
   const [error,setError]= useState("");
   const [avatar,setAvatar]=useState([])
-  
+   
 
-  const navigate = useNavigate()
+  
 
   const handleSubmit = async (e)=>{
     e.preventDefault()
@@ -20,9 +25,12 @@ function ProfileUpdatePage() {
     const {username, email,password} = Object.fromEntries(formData)
 
     try{
-      const res= await apiRequest.put(`/users/${currentUser.id}`,{username,email,password,avatar:avatar[0]})
-      updateUser(res.data);
-      navigate("/profile")
+      
+      const res= await apiRequest.put(`/users/${data.id}`,{username,email,password,avatar:avatar[0]})
+      //Ponerle una condicion para que se actualize solo si es el mismo usuario si es admin no se actualiza el contexto porque no es su perfil
+      if(!currentUser.isAdmin) updateUser(res.data);
+      
+      navigate("/profile/"+data.id)
     }catch(error){
       console.log(error)
       setError(error.response.data.message)
@@ -40,7 +48,7 @@ function ProfileUpdatePage() {
               id="username"
               name="username"
               type="text"
-              defaultValue={currentUser.username}
+              defaultValue={data.username}
             />
           </div>
           <div className="item">
@@ -49,7 +57,7 @@ function ProfileUpdatePage() {
               id="email"
               name="email"
               type="email"
-              defaultValue={currentUser.email}
+              defaultValue={data.email}
             />
           </div>
           <div className="item">
@@ -62,7 +70,7 @@ function ProfileUpdatePage() {
         </form>
       </div>
       <div className="sideContainer">
-        <img src={avatar[0] || currentUser.avatar|| "/noavatar.png"} alt="" className="avatar" />
+        <img src={avatar[0] || data.avatar|| "/noavatar.png"} alt="" className="avatar" />
         <UploadWidget uwConfig={{
           cloudName:"midulcehogar",
           uploadPreset:"Midulcehogar",

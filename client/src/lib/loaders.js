@@ -16,12 +16,14 @@ export const listPageLoader = async ({request,params})=>{
     });
    
 }
-export const getUserContact = async ({request,params})=>{
+export const getUserInfo = async ({request,params})=>{
     const res = await apiRequest("/users/"+params.id)
-    return res.data.userContact;
+    return res.data;
 }
 
+
 export const profilePageLoader = async ({request,params})=>{
+    
     if(!params.id){
         const postPromise = apiRequest("/users/profilePosts");
     const chatPromise = apiRequest("/chats");

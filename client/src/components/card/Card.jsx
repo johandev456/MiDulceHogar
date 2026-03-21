@@ -16,7 +16,7 @@ function Card({ item ,prof}) {
   const handleDelete= async()=>{
       if(confirm("Seguro que quieres borrar esta publicación?")){
         await apiRequest.delete("/posts/"+item.id);
-      navigate("/profile")
+      navigate("/profile/"+item.id)
       }
       
   }

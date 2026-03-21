@@ -47,20 +47,22 @@ export const getUser = async (req,res)=>{
 export const updateUser = async (req,res)=>{
         
         const id = req.params.id;
+        
         const tokenUserId = req.userId;
         const {password,avatar,...inputs} = req.body;
         //Verificacion de seguridad.
-        if(id !== tokenUserId) {
+        if(id !== tokenUserId && !req.isAdmin) {
             return res.status(403).json({message: "Not authorized"})
         }
         try{
         if(req.body.contact){ //En el caso de que solamente se tenga que actualizar la info de contacto
             const body=req.body.data;
-            const contact = await prisma.userContact.findUnique({where:{userId:tokenUserId}})
+            console.log(body)
+            const contact = await prisma.userContact.findUnique({where:{userId:id}})
         console.log(contact)
         
         if(!contact){
-            const newContact = await prisma.userContact.create( { ...body, userId: tokenUserId } )
+            const newContact = await prisma.userContact.create( { data:{...body,userId: id }} )
             console.log(newContact)
 
             return res.status(200).json({message: "Contact info created!"})
@@ -68,7 +70,7 @@ export const updateUser = async (req,res)=>{
             
             const updateContact = await prisma.userContact.update({
                 where:{
-                userId:tokenUserId 
+                userId:id
             },
             data: {...body}
             
@@ -109,8 +111,9 @@ export const deleteUser = async (req,res)=>{
 
     const id = req.params.id;
         const tokenUserId = req.userId;
+        const isAdmin= req.isAdmin
         
-        if(id !== tokenUserId) {
+        if(id !== tokenUserId && !isAdmin) {
             return res.status(403).json({message: "Not authorized"})
         }
     try{

@@ -9,13 +9,19 @@ function UserCard({ item }) {
     
    // Get isAdmin from localStorage
 
-  console.log(item)
+  
 
   
   const navigate= useNavigate();
   
   const {currentUser} = useContext(AuthContext)
- 
+ const handleDelete= async(id)=>{
+      if(confirm("Seguro que quieres borrar este usuario?")){
+        await apiRequest.delete("/users/"+id);
+      navigate("/listUsers")
+      }
+      
+  }
   const handleDetail = (id)=>{
     navigate("/profile/"+id)
   }
@@ -31,9 +37,9 @@ function UserCard({ item }) {
                     <p>{user.email}</p>
                   </div>
                   <div className="userActions">
-                    <button>Editar</button>
-                    <button>Borrar</button>
-                    <button onClick={() => handleDetail(user.id)}>Detalles</button>
+                    <button onClick={() => handleDetail(user.id)}>Editar</button>
+                    <button onClick={() => handleDelete(user.id)}>Borrar</button>
+                    
                   </div>
                 </div>
             ))

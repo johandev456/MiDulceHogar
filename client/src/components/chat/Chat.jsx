@@ -20,10 +20,11 @@ function Chat({chats}) {
     },[chat])
   const handleOpenChat = async (id,receiver)=>{
     
-
+    
     
     try{
       const res = await apiRequest("/chats/"+id);
+      
       if(!res.data.seenBy.includes(currentUser.id)){ // Cuando se abre el chat de un mensaje no visto se reduce la notifciacion de mensajes no vistos
         decrease()
       }
@@ -47,7 +48,7 @@ const handleSubmit=async e=>{
   e.preventDefault();
   const formData = new FormData(e.target)
   const text=formData.get("text")
-  if(!text) return;
+  if(!text || !chat?.receiver?.id) return;
   try{
     
     const addition = await apiRequest.post("/messages/"+chat.id,{text})
@@ -95,28 +96,32 @@ useEffect(()=>{
       <div className="messages">
         <h1>Mensajes</h1>
         {
-          chats.map(chatf=>(
-            <>
+          
+          chats.map(chatf=>{
+            const receiver = chatf.receiver;
+
+            return (
+            <div key={chatf.id}>
             <button onClick={()=>handleDelete(chatf.id)} className="deleteButton">
                 Borrar chat
                 <img  src="/del.png" alt="" />
             </button>
-            <div className="message" key={chatf.id} style={{
+            <div className="message" style={{
                 backgroundColor: chatf.seenBy.includes(currentUser.id) || chat?.id === chatf.id ? "white" : "#5b6f904e",
               }}
-              onClick={()=>handleOpenChat(chatf.id,chatf.receiver)}
+              onClick={()=>handleOpenChat(chatf.id, receiver)}
               >
               
               <img
-                src={chatf.receiver.avatar || "/noavatar.png"}
+                src={receiver?.avatar || "/noavatar.png"}
                 alt=""
               />
-              <span>{chatf.receiver.username}</span>
+              <span>{receiver?.username || "Usuario no disponible"}</span>
               <p>{chatf.lastMessage}</p>
               
             </div>
-            </>
-          ))
+            </div>
+          )})
         }
         
       </div>
@@ -125,10 +130,10 @@ useEffect(()=>{
           <div className="top">
             <div className="user">
               <img
-                src={chat.receiver.avatar || "noavatar.png"}
+                src={chat.receiver?.avatar || "/noavatar.png"}
                 alt=""
               />
-              {chat.receiver.username}
+              {chat.receiver?.username || "Usuario no disponible"}
             </div>
             <span className="close" onClick={()=>setChat(null)}>X</span>
           </div>

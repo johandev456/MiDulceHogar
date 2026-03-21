@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 function ProfilePage() {
     const data = useLoaderData();
   const {currentUser, updateUser} = useContext(AuthContext);
+  
   const navigate = useNavigate();
   
   console.log(data)
@@ -30,10 +31,12 @@ function ProfilePage() {
       <div className="details">
         <div className="wrapper">
           <div className="title">
+            
             <h1>Información del Usuario</h1>
-            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to="/profileUpdate">
+            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to={data.userResponse? "/profileUpdate/"+data.userId : "/profileUpdate/"+currentUser.id}>
               <button>Actualizar Perfil</button>
             </Link>}
+            
             
           </div>
           <div className="info">
@@ -74,7 +77,7 @@ function ProfilePage() {
           </div>
           <div className="title">
             <h1>Mis Publicaciones</h1>
-            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to="/add">
+            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to={currentUser.isAdmin? "/add/"+data.userId : "/add"}>
             <button>Crear Nueva Publicación</button>
             </Link>}
             

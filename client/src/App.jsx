@@ -13,7 +13,7 @@ import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage";
 import Register from "./routes/register/register";
 import {Layout, RequireAdminAuth, RequireAuth } from "./routes/layout/layout";
 import ModPostPage from "./routes/modPostPage/modPostPage";
-import { getUserContact, listPageLoader, listUserLoader, profilePageLoader, singlePageLoader } from "./lib/loaders";
+import { getUserInfo, listPageLoader, listUserLoader, profilePageLoader, singlePageLoader } from "./lib/loaders";
 import ContactInfoPage from "./routes/contactInfoPage/contactInfoPage";
 import LoginAdmin from "./routes/loginAdmin/loginAdmin";
 import ListUsers from "./routes/listUsers/listUsers";
@@ -70,8 +70,9 @@ function App() {
           loader: profilePageLoader
         },
         {
-          path: "/profileUpdate",
-          element: <ProfileUpdatePage/>
+          path: "/profileUpdate/:id",
+          element: <ProfileUpdatePage/>,
+          loader: getUserInfo
         },
         {
           path: "/add",
@@ -85,7 +86,7 @@ function App() {
         {
           path: "/userContact/:id",
           element: <ContactInfoPage/>,
-          loader: getUserContact
+          loader: getUserInfo
         }
         
 
@@ -103,10 +104,11 @@ function App() {
           loader: listUserLoader
         },
         {
-          path: "profileUpdate/:id",
-          element: <ProfilePage/>,
-          loader: profilePageLoader
-        }
+          path: "/add/:id",
+          element: <NewPostPage/>,
+          loader: getUserInfo
+        },
+        
 
       ]
     }

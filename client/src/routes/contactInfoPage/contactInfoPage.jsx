@@ -8,8 +8,9 @@ import UploadWidget from "../../components/uploadWidget/uploadWidget";
 
 function ContactInfoPage() {
 const {currentUser} =useContext(AuthContext);
-  const userdata = useLoaderData();
-  
+  const dataUser = useLoaderData();
+  const userdata = dataUser.userContact
+ 
   const [contactinfo,setContactInfo]=useState({userContact: userdata || ""});
   console.log(contactinfo)
   const [error,setError]= useState("");
@@ -24,9 +25,10 @@ const {currentUser} =useContext(AuthContext);
     const data = Object.fromEntries(formData)
 
     try{
-      const res= await apiRequest.put(`/users/${currentUser.id}`, {data, contact:true})
+      
+      const res= await apiRequest.put(`/users/${dataUser.id}`, {data, contact:true})
       // updateUser(res.data);
-      navigate(`/profile`)
+      navigate(`/profile/${dataUser.id}`)
     }catch(error){
       console.log(error)
       setError(error.response.data.message)
@@ -35,7 +37,7 @@ const {currentUser} =useContext(AuthContext);
   
   return (
     <div className="profileUpdatePage">
-      {(currentUser.id===contactinfo.userContact.userId)? <div className="formContainer">
+      {(currentUser.id===contactinfo.userContact.userId || currentUser.isAdmin)? <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <h1>Actualizar información de contacto</h1>
           <div className="item">

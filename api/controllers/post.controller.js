@@ -167,9 +167,11 @@ export const deletePost = async (req, res) =>{
 }
 export const addPost = async (req, res) =>{
     const tokenUserId = req.userId;
+    
     const body = req.body;
+    console.log(body)
     try{
-        const newPost= await prisma.post.create({data:{...body.postData, userId:tokenUserId, postDetail:{
+        const newPost= await prisma.post.create({data:{...body.postData ,userId:body.dataUser.userId, postDetail:{
             create:body.postDetail
         }}})
         

@@ -4,14 +4,19 @@ import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/uploadWidget";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import LocationPicker from "../../components/locationPicker/locationPicker";
 import Citys from "../../components/Citys/Citys";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 function NewPostPage() {
+  
   const { currentUser } = useContext(AuthContext);
+  let userId = currentUser.id;
+  if(currentUser.isAdmin) {const data = useLoaderData();
+    
+    userId = data.id;}
   const [value,setValue] = useState(""); // Se toma la entrada de desc aparte porque se esta usando reactquill.
  const [error,setError]= useState("");
  const[cityf,setCityf]=useState("");
@@ -27,10 +32,13 @@ function NewPostPage() {
     const formData = new FormData(e.target);
     const inputs= Object.fromEntries(formData);
     
-    console.log(inputs)
+    
     try{
-      const res = await apiRequest.get('/posts',{
-        
+      console.log(userId)
+      const res = await apiRequest.post('/posts',{
+       dataUser: {
+        userId: userId
+       },
        postData: {
         title: inputs.title,
         price: parseInt(inputs.price),
@@ -43,6 +51,7 @@ function NewPostPage() {
         latitude: String(coords.latitude),
         longitude: String(coords.longitude),
         images: images,
+        
 
        },
        postDetail:{
@@ -58,7 +67,7 @@ function NewPostPage() {
       
       })
       // console.log(res.data.id)
-      navigate("/userContact/"+currentUser.id)
+      navigate("/userContact/"+userId)
     }catch(error){
       console.log(error)
       setError(error.response.data.message)
