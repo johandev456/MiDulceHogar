@@ -39,6 +39,25 @@ function RequireAuth() {
     </div>)
   );
 }
+function RequireAdminAuth() {
+
+  const {currentUser} = useContext(AuthContext)
+
+  
+  return (
+    !currentUser.isAdmin ?(<Navigate to="/" />) :
+    (<div className="layout">
+      <div className="navbar">
+        <Navbar />
+      </div>
+      <div className="content">
+        <Outlet/>
+      </div>
+      <Footer/>
+    </div>)
+  );
+}
 
 
-export {Layout, RequireAuth};
+
+export {Layout, RequireAuth, RequireAdminAuth};

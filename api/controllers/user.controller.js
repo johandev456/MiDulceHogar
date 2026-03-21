@@ -158,9 +158,10 @@ export const savePost = async (req,res)=>{
     }
 }
 export const profilePosts = async (req,res)=>{
-
-    
-        const tokenUserId = req.userId;
+        let tokenUserId = req.userId;
+        
+        if(req.params.id) tokenUserId= req.params.id;
+        
         
         
     try{

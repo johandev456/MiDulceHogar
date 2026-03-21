@@ -16,7 +16,9 @@ function UserCard({ item }) {
   
   const {currentUser} = useContext(AuthContext)
  
-
+  const handleDetail = (id)=>{
+    navigate("/profile/"+id)
+  }
   return (
     <div className="Users">
         <h1> Usuarios</h1>
@@ -27,6 +29,11 @@ function UserCard({ item }) {
                   <div className="userInfo">
                     <h3>{user.username}</h3>
                     <p>{user.email}</p>
+                  </div>
+                  <div className="userActions">
+                    <button>Editar</button>
+                    <button>Borrar</button>
+                    <button onClick={() => handleDetail(user.id)}>Detalles</button>
                   </div>
                 </div>
             ))

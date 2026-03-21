@@ -21,14 +21,27 @@ export const getUserContact = async ({request,params})=>{
     return res.data.userContact;
 }
 
-export const profilePageLoader = async ()=>{
-    
-    const postPromise = apiRequest("/users/profilePosts");
+export const profilePageLoader = async ({request,params})=>{
+    if(!params.id){
+        const postPromise = apiRequest("/users/profilePosts");
     const chatPromise = apiRequest("/chats");
     return defer({
         postResponse: postPromise,
-        chatResponse: chatPromise
+        chatResponse: chatPromise,
+        userResponse: null
     })
+    }else{
+        const postPromise = apiRequest("/users/profilePosts/"+params.id);
+        const res = apiRequest("/users/"+params.id)
+    return defer({
+        postResponse: postPromise,
+        chatResponse: null,
+        userResponse: res,
+        userId:params.id
+        
+    })
+    }
+    
 }
 
 export const listUserLoader = async ()=>{

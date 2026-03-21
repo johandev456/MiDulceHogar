@@ -14,7 +14,7 @@ function ProfilePage() {
   
   console.log(data)
 
-
+ 
   const handleLogout = async ()=>{
     try{
       await apiRequest.post("/auth/logout");
@@ -31,13 +31,32 @@ function ProfilePage() {
         <div className="wrapper">
           <div className="title">
             <h1>Información del Usuario</h1>
-            <Link to="/profileUpdate">
+            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to="/profileUpdate">
               <button>Actualizar Perfil</button>
-            </Link>
+            </Link>}
             
           </div>
           <div className="info">
+            {data.userResponse? <Suspense fallback={<p>Cargando...</p>}> <Await 
+              resolve={data.userResponse}
+              errorElement={<p>Error cargando usuario!</p>}
+            >
+              
+              {(userResponse) =>
+              <><span>
+              Avatar:
+              <img
+                src={userResponse.data.avatar || "/noavatar.png"}
+                alt=""
+              />
+            </span>
             <span>
+              Usuario: <b>{userResponse.data.username}</b>
+            </span>
+            <span>
+              Correo: <b>{userResponse.data.email}</b>
+            </span></> }
+              </Await></Suspense> :<><span>
               Avatar:
               <img
                 src={currentUser.avatar || "/noavatar.png"}
@@ -49,16 +68,17 @@ function ProfilePage() {
             </span>
             <span>
               Correo: <b>{currentUser.email}</b>
-            </span>
-            <button onClick={handleLogout}>Cerrar Sesión</button>
+            </span></>}
+
+            {(data.chatResponse!==null)&&<button onClick={handleLogout}>Cerrar Sesión</button>}
           </div>
           <div className="title">
             <h1>Mis Publicaciones</h1>
-            <Link to="/add">
+            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to="/add">
             <button>Crear Nueva Publicación</button>
-            </Link>
+            </Link>}
             
-            <Link to={"/userContact/"+currentUser.id}>
+            <Link to={data.chatResponse? "/userContact/"+currentUser.id : "/userContact/"+data.userId}>
             <button>Información de contacto</button>
             </Link>
             
@@ -90,8 +110,10 @@ function ProfilePage() {
         </Suspense>
         </div>
       </div>
+      {(data.chatResponse!==null)&&
       <div className="chatContainer">
         <div className="wrapper">
+
           <Suspense fallback={<p>Cargando...</p>}>
     <Await
           resolve={data.chatResponse}
@@ -105,7 +127,9 @@ function ProfilePage() {
           
         </div>
       </div>
+  }
     </div>
+        
   );
 }
 

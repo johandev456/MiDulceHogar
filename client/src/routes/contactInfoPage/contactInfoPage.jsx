@@ -35,7 +35,7 @@ const {currentUser} =useContext(AuthContext);
   
   return (
     <div className="profileUpdatePage">
-      <div className="formContainer">
+      {(currentUser.id===contactinfo.userContact.userId)? <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <h1>Actualizar información de contacto</h1>
           <div className="item">
@@ -109,7 +109,48 @@ const {currentUser} =useContext(AuthContext);
           <button>Actualizar</button>
           {error && <span>{error}</span>}
         </form>
-      </div>
+      </div>: <div className="readOnly">
+        <h1>Información de contacto</h1>
+        <p className="subtitle">Datos públicos del usuario</p>
+
+        <div className="contactGrid">
+          <div className="contactItem">
+            <span className="label">Nombre completo</span>
+            <span className="value">{contactinfo.userContact?.name || "No disponible"}</span>
+          </div>
+
+          <div className="contactItem">
+            <span className="label">Correo comercial</span>
+            <span className="value">{contactinfo.userContact?.emailc || "No disponible"}</span>
+          </div>
+
+          <div className="contactItem">
+            <span className="label">Teléfono</span>
+            <span className="value">{contactinfo.userContact?.phone || "No disponible"}</span>
+          </div>
+
+          <div className="contactItem">
+            <span className="label">Whatsapp</span>
+            <span className="value">{contactinfo.userContact?.whatsapp || "No disponible"}</span>
+          </div>
+
+          <div className="contactItem">
+            <span className="label">Instagram</span>
+            <span className="value">{contactinfo.userContact?.instagram || "No disponible"}</span>
+          </div>
+
+          <div className="contactItem">
+            <span className="label">Facebook</span>
+            <span className="value">{contactinfo.userContact?.facebook || "No disponible"}</span>
+          </div>
+
+          <div className="contactItem fullWidth">
+            <span className="label">Sitio web</span>
+            <span className="value">{contactinfo.userContact?.website || "No disponible"}</span>
+          </div>
+        </div>
+          
+      </div>}
       
     </div>
   );

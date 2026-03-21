@@ -13,7 +13,7 @@ function SinglePage() {
   const postUser = data.res1.data.userContact || data.res1.data; // Si no hay información de contacto, usar la información del usuario
   
   const postUserId= postUser.userId || postUser.id
-  console.log(postUserId)
+  
   const [saved,setSaved] = useState(post.isSaved)
   const navigate= useNavigate();
   const {currentUser} = useContext(AuthContext)
@@ -29,6 +29,9 @@ function SinglePage() {
       console.log(err)
     }
     
+  }
+  const handleProfile = ()=>{
+    navigate(`/profile/${postUserId}`)
   }
   const handleSave=async()=>{
     // Usar optimistic hook si se actualiza despues de react 19
@@ -83,6 +86,9 @@ function SinglePage() {
             <span>Telefono: {postUser.phone || ""}</span>
             <span>Email: {postUser.emailc || ""}</span>
              <div className="contactActions">
+             <button onClick={handleProfile}>
+              Perfil
+             </button>
               {postUser.whatsapp && (
                 <button
                   onClick={() => window.open(`https://wa.me/${postUser.whatsapp}`, "_blank")}

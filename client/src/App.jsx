@@ -11,7 +11,7 @@ import NewPostPage from "./routes/newPostPage/newPostPage"
 import Login from "./routes/login/login";
 import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage";
 import Register from "./routes/register/register";
-import {Layout, RequireAuth } from "./routes/layout/layout";
+import {Layout, RequireAdminAuth, RequireAuth } from "./routes/layout/layout";
 import ModPostPage from "./routes/modPostPage/modPostPage";
 import { getUserContact, listPageLoader, listUserLoader, profilePageLoader, singlePageLoader } from "./lib/loaders";
 import ContactInfoPage from "./routes/contactInfoPage/contactInfoPage";
@@ -65,6 +65,11 @@ function App() {
           loader: profilePageLoader
         },
         {
+          path:"/profile/:id",
+          element:<ProfilePage/>,
+          loader: profilePageLoader
+        },
+        {
           path: "/profileUpdate",
           element: <ProfileUpdatePage/>
         },
@@ -82,14 +87,30 @@ function App() {
           element: <ContactInfoPage/>,
           loader: getUserContact
         }
-        ,{
+        
+
+      ]
+    },
+    {
+      path:"/",
+      element: <RequireAdminAuth/>,
+      children:[
+        
+        
+        {
           path: "/listUsers/",
           element: <ListUsers/>,
           loader: listUserLoader
+        },
+        {
+          path: "profileUpdate/:id",
+          element: <ProfilePage/>,
+          loader: profilePageLoader
         }
 
       ]
     }
+
   ]);
 
   return (
