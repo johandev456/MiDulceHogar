@@ -1,5 +1,19 @@
 .Users{
     padding: 16px;
+    .header{
+        display: grid;
+        grid-template-columns: 1fr auto;
+        
+        button{
+            justify-self: end;
+            padding: 8px 16px;
+            border: none;
+            background-color: #6e82a1;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    }
 }
 .userCards{
     display: grid;

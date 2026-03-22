@@ -45,7 +45,7 @@ function RequireAdminAuth() {
 
   
   return (
-    !currentUser.isAdmin ?(<Navigate to="/" />) :
+    !currentUser?.isAdmin ?(<Navigate to="/" />) :
     (<div className="layout">
       <div className="navbar">
         <Navbar />

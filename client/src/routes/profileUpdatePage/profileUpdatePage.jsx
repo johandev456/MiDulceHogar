@@ -3,14 +3,16 @@ import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 import { useState } from "react";
 import apiRequest from "../../lib/apiRequest"
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
 import UploadWidget from "../../components/uploadWidget/uploadWidget";
 
 function ProfileUpdatePage() {
   const navigate = useNavigate()
   const data = useLoaderData();
   const {updateUser,currentUser} =useContext(AuthContext);
-  if (!currentUser.isAdmin && currentUser.id !== data.id) navigate("/profile")
+  if (!currentUser?.isAdmin && currentUser?.id !== data.id) {
+    return <Navigate to="/profile" replace />;
+  }
   
   
   const [error,setError]= useState("");

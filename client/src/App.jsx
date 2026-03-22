@@ -18,8 +18,7 @@ import ContactInfoPage from "./routes/contactInfoPage/contactInfoPage";
 import LoginAdmin from "./routes/loginAdmin/loginAdmin";
 import ListUsers from "./routes/listUsers/listUsers";
 
-function App() {
-  const router = createBrowserRouter([
+const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
@@ -114,6 +113,8 @@ function App() {
     }
 
   ]);
+
+function App() {
 
   return (
 

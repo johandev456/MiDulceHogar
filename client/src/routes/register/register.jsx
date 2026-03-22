@@ -2,12 +2,20 @@ import "./register.scss";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState  } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 function Register() {
   const [error,setError] = useState("")
   const navigate = useNavigate();
   const [IsLoading, setIsLoading] = useState(false);
+  const {currentUser} = useContext(AuthContext)
+
+  if (currentUser && currentUser.isAdmin === false) {
+    return <Navigate to="/profile" replace />;
+  }
+
   const handleSubmit = async (e) =>{
 
     e.preventDefault()
@@ -23,7 +31,10 @@ function Register() {
     {const res = await apiRequest.post("/auth/register",{
       username, email, password
     })
-  
+    if(currentUser?.isAdmin){
+      navigate("/listUsers")
+      return;
+    }
     navigate("/login");
   }
     catch (error) {

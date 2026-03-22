@@ -8,7 +8,7 @@ import { listUserLoader } from "../../lib/loaders";
 function ListUsers(){
     const {currentUser}= useContext(AuthContext);
     const users = useLoaderData();
-    console.log(users)
+  
     return(
         <Suspense fallback={<p>Cargando...</p>}>
             <Await

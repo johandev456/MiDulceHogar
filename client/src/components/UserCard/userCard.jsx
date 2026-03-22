@@ -25,9 +25,13 @@ function UserCard({ item }) {
   const handleDetail = (id)=>{
     navigate("/profile/"+id)
   }
+  const handleNewUser =()=>{
+    navigate("/register")
+  }
   return (
     <div className="Users">
-        <h1> Usuarios</h1>
+       <div className="header"> <h1> Usuarios</h1>
+        <button onClick={handleNewUser}>Crear Usuario</button></div>
         <div className="userCards">
             {item.map((user)=>(
                 <div className="userCard" key={user.id}>
