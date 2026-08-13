@@ -37,7 +37,7 @@ const {currentUser} =useContext(AuthContext);
   
   return (
     <div className="profileUpdatePage">
-      {(currentUser.id===contactinfo.userContact.userId || currentUser.isAdmin)? <div className="formContainer">
+      {(currentUser?.id===contactinfo.userContact.userId || currentUser?.isAdmin)? <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <h1>Actualizar información de contacto</h1>
           <div className="item">

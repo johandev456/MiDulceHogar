@@ -13,8 +13,8 @@ import { AuthContext } from "../../context/AuthContext";
 function NewPostPage() {
   
   const { currentUser } = useContext(AuthContext);
-  let userId = currentUser.id;
-  if(currentUser.isAdmin) {const data = useLoaderData();
+  let userId = currentUser?.id;
+  if(currentUser?.isAdmin) {const data = useLoaderData();
     
     userId = data.id;}
   const [value,setValue] = useState(""); // Se toma la entrada de desc aparte porque se esta usando reactquill.

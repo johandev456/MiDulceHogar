@@ -30,7 +30,7 @@ function ProfileUpdatePage() {
       
       const res= await apiRequest.put(`/users/${data.id}`,{username,email,password,avatar:avatar[0]})
       //Ponerle una condicion para que se actualize solo si es el mismo usuario si es admin no se actualiza el contexto porque no es su perfil
-      if(!currentUser.isAdmin) updateUser(res.data);
+      if(!currentUser?.isAdmin) updateUser(res.data);
       
       navigate("/profile/"+data.id)
     }catch(error){

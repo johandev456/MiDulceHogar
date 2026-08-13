@@ -33,7 +33,7 @@ function ProfilePage() {
           <div className="title">
             
             <h1>Información del Usuario</h1>
-            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to={data.userResponse? "/profileUpdate/"+data.userId : "/profileUpdate/"+currentUser.id}>
+            {(data.chatResponse!==null || currentUser?.isAdmin)&&<Link to={data.userResponse? "/profileUpdate/"+data.userId : "/profileUpdate/"+currentUser.id}>
               <button>Actualizar Perfil</button>
             </Link>}
             
@@ -77,7 +77,7 @@ function ProfilePage() {
           </div>
           <div className="title">
             <h1>Mis Publicaciones</h1>
-            {(data.chatResponse!==null || currentUser.isAdmin)&&<Link to={currentUser.isAdmin? "/add/"+data.userId : "/add"}>
+            {(data.chatResponse!==null || currentUser?.isAdmin)&&<Link to={currentUser?.isAdmin? "/add/"+data.userId : "/add"}>
             <button>Crear Nueva Publicación</button>
             </Link>}
             
