@@ -10,7 +10,8 @@ export const SocketContextProvider = ({children})=>{
 
     
     useEffect(()=>{
-        const socketInstance = io("http://127.0.0.1:4001", {
+        const socketUrl = import.meta.env.VITE_SOCKET_URL || undefined;
+        const socketInstance = io(socketUrl, {
             transports: ["websocket"],
         });
 

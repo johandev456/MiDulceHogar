@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: midulcehogar
+    runtime: node
+    plan: free
+    buildCommand: npm ci --prefix client && npm run build --prefix client && npm ci --prefix api
+    startCommand: npm start --prefix api
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
