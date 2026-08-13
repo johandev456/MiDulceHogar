@@ -18,6 +18,10 @@ function SinglePage() {
   const navigate= useNavigate();
   const {currentUser} = useContext(AuthContext)
   const handleChat = async ()=>{
+    if(!currentUser){
+      navigate("/login")
+      return;
+    }
     const body={
       userIDs:[currentUser.id,postUserId],
       seenBy:[currentUser.id]
@@ -35,11 +39,12 @@ function SinglePage() {
   }
   const handleSave=async()=>{
     // Usar optimistic hook si se actualiza despues de react 19
-    setSaved((prev)=> !prev);
-
     if(!currentUser){
       navigate("/login")
+      return;
     }
+
+    setSaved((prev)=> !prev);
     try{
       console.log(post.isSaved)
       await apiRequest.post("/users/save",{postId: post.id})
@@ -209,7 +214,7 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-           { (currentUser.id !== post.userId) && (
+           { (!currentUser || currentUser.id !== post.userId) && (
               <button onClick={handleChat}>
                 <img src="/chat.png" alt="" />
                 Enviar Mensaje

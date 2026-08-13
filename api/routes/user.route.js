@@ -9,7 +9,7 @@ router.get('/profilePosts', verifyToken, profilePosts);
 router.get("/notification",verifyToken, getNotificationNumber);//Un detalle es que si se pone primero los get con :id
 // Pasa que literalmente cree que el id es la direccion ejemplo profilePosts.
 router.get('/profilePosts/:id', verifyToken, profilePosts);
-router.get("/:id",verifyToken, getUser);
+router.get("/:id", getUser);
 router.put("/:id",verifyToken, updateUser);
 router.delete("/:id",verifyToken, deleteUser);
 router.post('/save', verifyToken, savePost);
