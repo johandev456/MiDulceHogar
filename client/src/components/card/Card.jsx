@@ -70,11 +70,11 @@ function Card({ item ,prof}) {
               
                 <img  src={saved ? "/saved.png":"/save.png"} alt="" />
             </div>
-            {(prof || currentUser.isAdmin) && <div onClick={handleDelete} className="icon">
+            {(prof || currentUser?.isAdmin) && <div onClick={handleDelete} className="icon">
               
                 <img  src="/del.png" alt="" />
             </div>}
-            {(prof || currentUser.isAdmin) && <div onClick={handleMod} className="icon">
+            {(prof || currentUser?.isAdmin) && <div onClick={handleMod} className="icon">
               
                 <img  src="/edit.png" alt="" />
             </div>}

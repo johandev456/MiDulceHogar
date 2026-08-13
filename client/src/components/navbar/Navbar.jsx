@@ -20,9 +20,9 @@ function Navbar() {
           <span>Mi Dulce Hogar</span>
         </a>
         <a href="/">Inicio</a>
-        <Link to={"/list"}><a href="/">Propiedades</a></Link>
+        <Link to={"/list"}>Propiedades</Link>
         {currentUser?.isAdmin && (
-          <Link to={"/listUsers"}><a href="/">Usuarios</a></Link>
+          <Link to={"/listUsers"}>Usuarios</Link>
         )}
         <a href="/">Acerca de</a>
         <a href="/">Contacto</a>
