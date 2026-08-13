@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./navbar.scss";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
@@ -11,7 +11,16 @@ function Navbar() {
   const fetch = useNotificationStore(state=>state.fetch)
   const number = useNotificationStore(state=>state.number)
   
-  if(currentUser) fetch()
+  useEffect(() => {
+    if (!currentUser) return;
+
+    fetch().catch((error) => {
+      if (error?.response?.status !== 401) {
+        console.log(error);
+      }
+    });
+  }, [currentUser, fetch]);
+
   return (
     <nav>
       <div className="left">
