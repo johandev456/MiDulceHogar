@@ -13,11 +13,13 @@ function Chat({chats}) {
   const {currentUser} =useContext(AuthContext);
   const {socket} = useContext(SocketContext);
   const messageEndRef = useRef()
+  const centerRef = useRef()
   const navigate= useNavigate()
   const decrease = useNotificationStore(state=>state.decrease)
-  useEffect(()=>{ //Se encarga de hacer scroll al ultimo mensaje.
-      messageEndRef.current?.scrollIntoView({behavior:"smooth"});
-    },[chat])
+  useEffect(()=>{ //Solo desplaza el panel interno de mensajes.
+      if (!centerRef.current) return;
+      centerRef.current.scrollTop = centerRef.current.scrollHeight;
+    },[chat?.messages])
   const handleOpenChat = async (id,receiver)=>{
     
     
@@ -137,7 +139,7 @@ useEffect(()=>{
             </div>
             <span className="close" onClick={()=>setChat(null)}>X</span>
           </div>
-          <div className="center">
+          <div className="center" ref={centerRef}>
             {chat.messages.map(msg=> (
                <div className="chatMessage"
                style={{
