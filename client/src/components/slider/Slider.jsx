@@ -2,17 +2,19 @@ import { useState } from "react";
 import "./slider.scss";
 
 function Slider({ images }) {
+  const safeImages = Array.isArray(images) ? images : [];
+  const coverImage = safeImages[0] || "/noavatar.png";
   const [imageIndex, setImageIndex] = useState(null);
 
   const changeSlide = (direction) => {
     if (direction === "left") {
       if (imageIndex === 0) {
-        setImageIndex(images.length - 1);
+        setImageIndex(safeImages.length - 1);
       } else {
         setImageIndex(imageIndex - 1);
       }
     } else {
-      if (imageIndex === images.length - 1) {
+      if (imageIndex === safeImages.length - 1) {
         setImageIndex(0);
       } else {
         setImageIndex(imageIndex + 1);
@@ -28,7 +30,7 @@ function Slider({ images }) {
             <img src="/arrow.png" alt="" />
           </div>
           <div className="imgContainer">
-            <img src={images[imageIndex]} alt="" />
+            <img src={safeImages[imageIndex] || coverImage} alt="" />
           </div>
           <div className="arrow" onClick={() => changeSlide("right")}>
             <img src="/arrow.png" className="right" alt="" />
@@ -39,10 +41,10 @@ function Slider({ images }) {
         </div>
       )}
       <div className="bigImage">
-        <img src={images[0]} alt="" onClick={() => setImageIndex(0)} />
+        <img src={coverImage} alt="" onClick={() => safeImages.length > 0 && setImageIndex(0)} />
       </div>
       <div className="smallImages">
-        {images.slice(1).map((image, index) => (
+        {safeImages.slice(1).map((image, index) => (
           <img
             src={image}
             alt=""

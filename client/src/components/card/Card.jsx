@@ -7,6 +7,7 @@ import apiRequest from "../../lib/apiRequest";
 function Card({ item ,prof}) {
     
     const [saved,setSaved] = useState(item.isSaved||false)
+  const coverImage = item.images?.[0] || "/noavatar.png";
    // Get isAdmin from localStorage
 
   
@@ -43,7 +44,7 @@ function Card({ item ,prof}) {
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
-        <img src={item.images[0]} alt="" />
+        <img src={coverImage} alt="" />
       </Link>
       <div className="textContainer">
         <h2 className="title">
